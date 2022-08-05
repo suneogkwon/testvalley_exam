@@ -5,8 +5,10 @@ class HomeAppBar extends AppBar {
   HomeAppBar({
     Key? key,
     Widget? title,
+    double? toolBarHeight,
   }) : super(
           key: key,
+          toolbarHeight: toolBarHeight,
           title: title,
           titleTextStyle: GoogleFonts.notoSans(
             color: const Color(0xFF333333),
@@ -16,6 +18,7 @@ class HomeAppBar extends AppBar {
           ),
           centerTitle: false,
           backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           elevation: 0,
         );
 }
