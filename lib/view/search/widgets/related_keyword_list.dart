@@ -17,6 +17,7 @@ class RelatedKeywordList extends StatelessWidget {
         splitTitle.removeWhere((element) => element.isEmpty);
 
         return ListTile(
+          onTap: () => _onTapRelatedKeywordItem(splitTitle.join()),
           contentPadding: EdgeInsets.zero,
           title: RichText(
             text: TextSpan(
@@ -42,5 +43,12 @@ class RelatedKeywordList extends StatelessWidget {
       ),
       itemCount: viewModel.relatedKeywords.length,
     );
+  }
+
+  void _onTapRelatedKeywordItem(String keyword) {
+    locator<GlobalKey<NavigatorState>>().currentState?.pushNamed(
+          AppRoutes.productList,
+          arguments: keyword,
+        );
   }
 }

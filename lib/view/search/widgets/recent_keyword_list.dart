@@ -5,7 +5,8 @@ class RecentKeywordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SearchViewModel viewModel = context.read<SearchViewModel>();
+    final RelatedKeywordViewModel viewModel =
+        context.read<RelatedKeywordViewModel>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,13 +81,13 @@ class RecentKeywordList extends StatelessWidget {
   }
 
   /// 최근 검색어 전체삭제 탭 이벤트
-  void _onTapClear(SearchViewModel viewModel) {
+  void _onTapClear(RelatedKeywordViewModel viewModel) {
     viewModel.clearRecentSearchKeywords();
   }
 
   /// 최근 검색어 개별 삭제 탭 이벤트
   void _onTapSelectedKeywordDelete(
-    SearchViewModel viewModel, {
+    RelatedKeywordViewModel viewModel, {
     required int index,
   }) {
     viewModel.removeSelectedKeyword(index);

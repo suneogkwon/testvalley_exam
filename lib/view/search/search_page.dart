@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/generated/assets.dart';
+import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
 import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
 import 'package:testvalley/widgets/app_bar/home_app_bar.dart';
 import 'package:testvalley/widgets/form/search_keyword_field.dart';
@@ -24,7 +24,8 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: locator<SearchViewModel>())
+        ChangeNotifierProvider.value(value: locator<SearchViewModel>()),
+        ChangeNotifierProvider.value(value: locator<RelatedKeywordViewModel>()),
       ],
       builder: (context, _) {
         final SearchViewModel viewModel = context.read<SearchViewModel>();
@@ -61,7 +62,6 @@ class SearchPage extends StatelessWidget {
                 Expanded(
                   child: Consumer<SearchViewModel>(
                     builder: (_, provider, child) {
-                      log('왜 안바뀜 ${provider.searchKeyword.isNotEmpty} | ${provider.relatedKeywords.isEmpty}');
                       if (provider.searchKeyword.isEmpty) {
                         return const RecentKeywordList();
                       }

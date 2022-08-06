@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:testvalley/data/api/search_api.dart';
-import 'package:testvalley/data/repository/search_repository.dart';
+import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
 import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
 
 /// 서비스 로케이터
@@ -17,11 +16,6 @@ void initLocator() {
   // viewmodel 등 context가 없는 곳에서 Navigator를 사용하기 위한 설정
   locator.registerSingleton(GlobalKey<NavigatorState>());
 
-  locator.registerSingleton(
-    SearchViewModel(
-      searchRepository: SearchRepository(
-        searchApi: SearchApi(),
-      ),
-    ),
-  );
+  locator.registerSingleton(RelatedKeywordViewModel());
+  locator.registerSingleton(SearchViewModel());
 }

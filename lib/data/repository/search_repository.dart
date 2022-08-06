@@ -1,26 +1,38 @@
-import 'dart:developer';
-
 import 'package:testvalley/data/api/search_api.dart';
+import 'package:testvalley/data/model/product/product_model.dart';
 
 class SearchRepository {
-  SearchRepository({required this.searchApi});
+  final SearchApi searchApi = SearchApi();
 
-  final SearchApi searchApi;
+  Future<ProductModelResponse> getProducts({
+    required String keyword,
+    int? start,
+  }) async {
+    final ProductModelResponse? data = await searchApi.getSearchList({
+      'query': keyword,
+      'start': '${start ?? 1}',
+    });
+
+    if (data == null) {
+      return ProductModelResponse(productList: []);
+    }
+
+    return data;
+  }
 
   Future<List<String>> getRelatedKeyword(String keyword) async {
-    final Map<String, dynamic> data = await searchApi.getSearchList({
+    final ProductModelResponse? data = await searchApi.getSearchList({
       'query': keyword,
     });
 
-    final List<dynamic> items = data['items'] ?? [];
+    if (data == null) return [];
+
+    final List<ProductModel> items = data.productList;
     final List<String> titleList = <String>[];
 
-    for (Map<String, dynamic> item in items) {
-      if (item['title'] != null) {
-        titleList.add(item['title']);
-      }
+    for (ProductModel item in items) {
+      titleList.add(item.title);
     }
-    log('titleList : $titleList');
 
     return titleList;
   }

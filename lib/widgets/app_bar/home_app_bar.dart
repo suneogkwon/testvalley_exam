@@ -6,6 +6,7 @@ class HomeAppBar extends AppBar {
     Key? key,
     Widget? title,
     double? toolBarHeight,
+    List<Widget>? actions,
   }) : super(
           key: key,
           toolbarHeight: toolBarHeight,
@@ -20,5 +21,14 @@ class HomeAppBar extends AppBar {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           elevation: 0,
+          actions: [
+            const SizedBox(
+              width: 20.0,
+            ),
+            ...?actions,
+            const SizedBox(
+              width: 20.0,
+            ),
+          ],
         );
 }

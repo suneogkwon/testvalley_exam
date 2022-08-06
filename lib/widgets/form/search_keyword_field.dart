@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:testvalley/generated/assets.dart';
 
 class SearchKeywordField extends StatelessWidget {
   const SearchKeywordField({
@@ -7,7 +9,7 @@ class SearchKeywordField extends StatelessWidget {
     this.tag,
     this.onTap,
     this.readOnly,
-    this.prefixIcon,
+    this.showPrefixIcon = false,
     this.suffixIcon,
     this.hintText,
     this.controller,
@@ -21,7 +23,7 @@ class SearchKeywordField extends StatelessWidget {
   final Function(String value)? onChanged;
   final Function(String value)? onFieldSubmitted;
   final bool? readOnly;
-  final Widget? prefixIcon;
+  final bool showPrefixIcon;
   final Widget? suffixIcon;
   final String? hintText;
   final TextEditingController? controller;
@@ -52,7 +54,13 @@ class SearchKeywordField extends StatelessWidget {
             color: Color(0xFFDDDDDD),
           ),
         ),
-        prefixIcon: prefixIcon,
+        prefixIcon: showPrefixIcon
+            ? SvgPicture.asset(
+                Assets.iconsSearch,
+                fit: BoxFit.scaleDown,
+                color: const Color(0xFF121212),
+              )
+            : null,
         suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: GoogleFonts.notoSans(

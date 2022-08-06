@@ -6,11 +6,7 @@ import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/repository/search_repository.dart';
 
 class SearchViewModel extends ChangeNotifier {
-  SearchViewModel({
-    required this.searchRepository,
-  });
-
-  final SearchRepository searchRepository;
+  final SearchRepository searchRepository = SearchRepository();
 
   /// 검색어
   String searchKeyword = '';
@@ -43,21 +39,6 @@ class SearchViewModel extends ChangeNotifier {
     locator<GlobalKey<NavigatorState>>()
         .currentState
         ?.pushNamed(AppRoutes.productList);
-    //TODO : 라우팅 로직
-    notifyListeners();
-  }
-
-  /// 최근 검색어([recentSearchKeywords])를 비운다.
-  void clearRecentSearchKeywords() {
-    if (recentSearchKeywords.isEmpty) return;
-
-    recentSearchKeywords.clear();
-    notifyListeners();
-  }
-
-  /// 최근 검색어([recentSearchKeywords])에서 [index]번째 항목을 삭제한다.
-  void removeSelectedKeyword(int index) {
-    recentSearchKeywords.removeAt(index);
     notifyListeners();
   }
 

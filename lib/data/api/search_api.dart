@@ -3,31 +3,36 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:testvalley/config/api_config.dart';
+import 'package:testvalley/data/model/product/product_model.dart';
 
 class SearchApi {
   final String naverApiUrl = 'openapi.naver.com';
   final String urlPath = '/v1/search/shop.json';
 
-  Future<Map<String, dynamic>> getSearchList(
+  Future<ProductModelResponse?> getSearchList(
     Map<String, dynamic> query,
   ) async {
     final Uri uri = Uri.https(naverApiUrl, urlPath, query);
-    log('uri: $uri');
-
-    final http.Response response = await httpClient.get(uri, headers: {
-      'X-Naver-Client-Id': naverClientId,
-      'X-Naver-Client-Secret': naverClientSecret,
-    });
 
     try {
+      final http.Response response = await httpClient.get(uri, headers: {
+        'X-Naver-Client-Id': naverClientId,
+        'X-Naver-Client-Secret': naverClientSecret,
+      });
+
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final Map<String, dynamic> body = jsonDecode(response.body);
+        log('$body');
+        final ProductModelResponse productModelResponse =
+            ProductModelResponse.fromJson(body);
+
+        return productModelResponse;
       }
       log('${response.statusCode}');
-      return {};
-    } catch (e) {
-      log('error : $e');
-      return {};
+    } catch (e, s) {
+      log('error : $e | $s');
     }
+
+    return null;
   }
 }
