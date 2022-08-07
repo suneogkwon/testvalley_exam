@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:testvalley/config/routes.dart';
+import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
 import 'package:testvalley/viewmodel/product_list_viewmodel.dart';
 
@@ -11,9 +13,12 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ProductListViewModel>(
-      create: (_) => ProductListViewModel(),
+    final ProductListViewModel plvm = locator<ProductListViewModel>();
+    return ChangeNotifierProvider.value(
+      value: plvm,
       builder: (context, child) {
+        plvm.loadProducts(initial: true);
+
         return PagedGridView<int, ProductModel>(
           pagingController:
               context.read<ProductListViewModel>().pagingController,
@@ -150,5 +155,10 @@ class ProductGridItem extends StatelessWidget {
     );
   }
 
-  void _onTapItem(int index) {}
+  void _onTapItem(int index) {
+    locator<GlobalKey<NavigatorState>>().currentState!.pushNamed(
+          AppRoutes.productDetail,
+          arguments: index,
+        );
+  }
 }

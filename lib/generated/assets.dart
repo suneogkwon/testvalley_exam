@@ -2,7 +2,9 @@
 class Assets {
   Assets._();
 
+  static const String iconsArrow = 'assets/icons/Arrow.svg';
   static const String iconsDelete = 'assets/icons/delete.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
-  static const String imagesEmoji = 'assets/images/emoji.png';
+  static const String imagesEmptyFolder = 'assets/images/empty_folder.png';
+  static const String imagesHandclap = 'assets/images/handclap.png';
 }

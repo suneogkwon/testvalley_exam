@@ -8,7 +8,7 @@ class NoRelatedKeywordList extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(Assets.imagesEmoji),
+        Image.asset(Assets.imagesEmptyFolder),
         const SizedBox(height: 32.0),
         Text(
           '조건에 맞는 상품이 없어요',

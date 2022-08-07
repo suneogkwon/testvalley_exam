@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:testvalley/viewmodel/cart_viewmodel.dart';
+import 'package:testvalley/viewmodel/product_list_viewmodel.dart';
 import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
 import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
 
@@ -18,4 +20,6 @@ void initLocator() {
 
   locator.registerSingleton(RelatedKeywordViewModel());
   locator.registerSingleton(SearchViewModel());
+  locator.registerSingleton(ProductListViewModel());
+  locator.registerSingleton(CartViewModel());
 }

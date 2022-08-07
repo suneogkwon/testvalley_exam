@@ -29,7 +29,9 @@ class ProductListViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void loadProducts() async {
+  void loadProducts({
+    bool initial = false,
+  }) async {
     final String keyword = locator<SearchViewModel>().searchKeyword;
 
     final ProductModelResponse response = await searchRepository.getProducts(
@@ -37,6 +39,10 @@ class ProductListViewModel extends ChangeNotifier {
       start: nextPageKey,
     );
     final bool isLast = response.start + 10 >= 1000;
+
+    if (initial) {
+      pagingController.refresh();
+    }
 
     if (isLast) {
       pagingController.appendLastPage(response.productList);

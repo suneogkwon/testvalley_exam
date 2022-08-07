@@ -3,6 +3,8 @@ import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   initLocator();
   runApp(const MyApp());
 }
