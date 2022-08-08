@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:testvalley/data/repository/search_repository.dart';
 
 class RelatedKeywordViewModel extends ChangeNotifier {
-  final SearchRepository searchRepository = SearchRepository();
+  final SearchRepository _searchRepository = SearchRepository();
 
   /// 연관 검색어 리스트
   List<String> relatedKeywords = <String>[];
@@ -25,7 +25,7 @@ class RelatedKeywordViewModel extends ChangeNotifier {
   }
 
   /// [keyword]로 연관 검색어를 불러와 [relatedKeywords]에 저장한다.
-  void setRelatedKeywords(String keyword) {
+  void setRelatedKeywordList(String keyword) {
     if (keyword.isEmpty) {
       resetState();
       return;
@@ -39,7 +39,7 @@ class RelatedKeywordViewModel extends ChangeNotifier {
       const Duration(milliseconds: 500),
       () async {
         final List<String> titleList =
-            await searchRepository.getRelatedKeyword(keyword);
+            await _searchRepository.getRelatedKeyword(keyword);
         relatedKeywords = titleList;
         notifyListeners();
       },

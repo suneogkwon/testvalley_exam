@@ -12,7 +12,7 @@ class ProductListViewModel extends ChangeNotifier {
     });
   }
 
-  final SearchRepository searchRepository = SearchRepository();
+  final SearchRepository _searchRepository = SearchRepository();
 
   final PagingController<int, ProductModel> pagingController =
       PagingController(firstPageKey: 0);
@@ -30,11 +30,12 @@ class ProductListViewModel extends ChangeNotifier {
   }
 
   void loadProducts({
+    required String keyword,
     bool initial = false,
   }) async {
     final String keyword = locator<SearchKeywordViewModel>().searchKeyword;
 
-    final ProductModelResponse response = await searchRepository.getProducts(
+    final ProductModelResponse response = await _searchRepository.getProducts(
       keyword: keyword,
       start: nextPageKey,
     );

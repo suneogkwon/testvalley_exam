@@ -8,12 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Pref().initStorage();
-  await Pref().storage.setStringList(Pref.recentKeyword, [
-    'a',
-    'b',
-    'c',
-    'd',
-  ]);
   initLocator();
   runApp(const MyApp());
 }

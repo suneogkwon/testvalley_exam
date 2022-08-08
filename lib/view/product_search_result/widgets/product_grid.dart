@@ -7,6 +7,7 @@ import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
 import 'package:testvalley/viewmodel/product_list_viewmodel.dart';
+import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
 class ProductGrid extends StatelessWidget {
   const ProductGrid({Key? key}) : super(key: key);
@@ -14,14 +15,18 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductListViewModel plvm = locator<ProductListViewModel>();
+    final SearchKeywordViewModel skvm = locator<SearchKeywordViewModel>();
+
     return ChangeNotifierProvider.value(
       value: plvm,
       builder: (context, child) {
-        plvm.loadProducts(initial: true);
+        plvm.loadProducts(
+          keyword: skvm.searchKeyword,
+          initial: true,
+        );
 
         return PagedGridView<int, ProductModel>(
-          pagingController:
-              context.read<ProductListViewModel>().pagingController,
+          pagingController: plvm.pagingController,
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (context, item, index) {
               return ProductGridItem(index: index);

@@ -46,7 +46,7 @@ class SearchPage extends StatelessWidget {
                   controller: searchController,
                   focus: true,
                   onChanged: _onChangedKeyword,
-                  onFieldSubmitted: _onSubmit,
+                  onFieldSubmitted: svm.searchProduct,
                   suffixIcon: GestureDetector(
                     onTap: _onTapSearchTextClear,
                     child: SvgPicture.asset(
@@ -89,24 +89,7 @@ class SearchPage extends StatelessWidget {
   /// 검색바 변경 감지
   void _onChangedKeyword(String? keyword) {
     svm.setSearchKeyword(keyword ?? '');
-    rkvm.setRelatedKeywords(keyword ?? '');
-  }
-
-  /// 검색바 제출 이벤트
-  void _onSubmit(String? keyword) {
-    if (keyword != null) {
-      final List<String> recentKeywordList =
-          Pref().storage.getStringList(Pref.recentKeyword) ?? [];
-
-      recentKeywordList.insert(0, keyword);
-
-      Pref().storage.setStringList(
-            Pref.recentKeyword,
-            recentKeywordList,
-          );
-
-      locator<AppNavigator>().pushNamed(AppRoutes.productList);
-    }
+    rkvm.setRelatedKeywordList(keyword ?? '');
   }
 
   /// 검색바 초기화 이벤트

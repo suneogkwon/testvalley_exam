@@ -6,7 +6,7 @@ import 'package:testvalley/generated/assets.dart';
 class SearchKeywordField extends StatelessWidget {
   const SearchKeywordField({
     Key? key,
-    this.tag,
+    this.initialString,
     this.onTap,
     this.readOnly,
     this.showPrefixIcon = false,
@@ -18,7 +18,7 @@ class SearchKeywordField extends StatelessWidget {
     this.onFieldSubmitted,
   }) : super(key: key);
 
-  final String? tag;
+  final String? initialString;
   final Function()? onTap;
   final Function(String value)? onChanged;
   final Function(String value)? onFieldSubmitted;
@@ -32,6 +32,7 @@ class SearchKeywordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialString,
       controller: controller,
       autofocus: focus ?? false,
       onTap: onTap,
