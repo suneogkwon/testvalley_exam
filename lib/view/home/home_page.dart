@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
+import 'package:testvalley/theme/text_theme.dart';
 import 'package:testvalley/widgets/app_bar/home_app_bar.dart';
 import 'package:testvalley/widgets/form/search_keyword_field.dart';
+import 'package:testvalley/widgets/layout/content_container.dart';
 import 'package:testvalley/widgets/layout/custom_scaffold.dart';
 
 part 'widgets/fav_keywords.dart';
@@ -15,13 +18,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: HomeAppBar(
+      appBar: MainAppBar(
         title: const Text('테스트벨리'),
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-        ),
+      body: ContentContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -42,8 +42,7 @@ class HomePage extends StatelessWidget {
   /// 검색바 탭 이벤트
   void _onTapSearchField() {
     FocusManager.instance.primaryFocus!.unfocus();
-    locator<GlobalKey<NavigatorState>>()
-        .currentState!
-        .pushNamed(AppRoutes.search);
+
+    locator<AppNavigator>().pushNamed(AppRoutes.search);
   }
 }

@@ -18,12 +18,7 @@ class FavKeywords extends StatelessWidget {
         const SizedBox(height: 40.0),
         Text(
           '인기 검색어',
-          style: GoogleFonts.notoSans(
-            color: const Color(0xFF333333),
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
-          ),
+          style: listLabelStyle,
         ),
         const SizedBox(height: 16.0),
         Wrap(
@@ -74,5 +69,10 @@ class FavKeywordChip extends StatelessWidget {
   }
 
   /// 인기 검색어 탭 이벤트
-  void _onTapFavKeyword(String keyword) {}
+  void _onTapFavKeyword(String keyword) {
+    locator<AppNavigator>().pushNamed(
+      AppRoutes.productList,
+      arguments: keyword,
+    );
+  }
 }

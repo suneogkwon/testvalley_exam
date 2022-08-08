@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
+import 'package:testvalley/config/storage_util.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Pref().initStorage();
+  await Pref().storage.setStringList(Pref.recentKeyword, [
+    'a',
+    'b',
+    'c',
+    'd',
+  ]);
   initLocator();
   runApp(const MyApp());
 }
@@ -21,15 +30,14 @@ class MyApp extends StatelessWidget {
       ),
       routes: AppRoutes.routes,
       initialRoute: AppRoutes.home,
-      navigatorKey: locator<GlobalKey<NavigatorState>>(),
+      navigatorKey: locator<AppNavigator>().nav,
       debugShowCheckedModeBanner: false,
       builder: (BuildContext context, Widget? child) {
         // 기기의 텍스트 배율 설정을 무시한다.
-        final MediaQueryData setMediaQueryData =
-            MediaQuery.of(context).copyWith(textScaleFactor: 1.0);
-
         return MediaQuery(
-          data: setMediaQueryData,
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: 1.0,
+          ),
           child: child!,
         );
       },

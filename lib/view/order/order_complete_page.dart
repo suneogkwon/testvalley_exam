@@ -16,7 +16,7 @@ class OrderCompletePage extends StatelessWidget {
     final int totalPrice = prevRoute.arguments as int;
 
     return CustomScaffold(
-      appBar: HomeAppBar(),
+      appBar: MainAppBar(),
       body: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 20,

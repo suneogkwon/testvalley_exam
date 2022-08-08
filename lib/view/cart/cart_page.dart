@@ -27,7 +27,7 @@ class CartPage extends StatelessWidget {
         cvm.insertItem(item);
 
         return CustomScaffold(
-          appBar: HomeAppBar(
+          appBar: MainAppBar(
             title: const Text('장바구니'),
           ),
           body: Column(

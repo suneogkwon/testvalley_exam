@@ -1,25 +1,48 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:testvalley/data/repository/search_repository.dart';
 
 class RelatedKeywordViewModel extends ChangeNotifier {
   final SearchRepository searchRepository = SearchRepository();
 
-  /// 최근 검색어
-  List<String> recentSearchKeywords = <String>[];
+  /// 연관 검색어 리스트
+  List<String> relatedKeywords = <String>[];
 
-  /// 최근 검색어([recentSearchKeywords])를 비운다.
-  void clearRecentSearchKeywords() {
-    if (recentSearchKeywords.isEmpty) return;
+  // API 요청 딜레이 타이머
+  Timer? _searchApiTimer;
 
-    recentSearchKeywords.clear();
+  @override
+  void dispose() {
+    _searchApiTimer?.cancel();
+    super.dispose();
+  }
+
+  void resetState() {
+    _searchApiTimer?.cancel();
+    relatedKeywords.clear();
     notifyListeners();
   }
 
-  /// 최근 검색어([recentSearchKeywords])에서 [index]번째 항목을 삭제한다.
-  void removeSelectedKeyword(int index) {
-    if (recentSearchKeywords.isEmpty) return;
+  /// [keyword]로 연관 검색어를 불러와 [relatedKeywords]에 저장한다.
+  void setRelatedKeywords(String keyword) {
+    if (keyword.isEmpty) {
+      resetState();
+      return;
+    }
 
-    recentSearchKeywords.removeAt(index);
-    notifyListeners();
+    // 과도한 API 요청을 방지하기 위해
+    // 0.5초 이내에 다시 요청하면 요청 딜레이를 초기화한다.
+    _searchApiTimer?.cancel();
+
+    _searchApiTimer = Timer(
+      const Duration(milliseconds: 500),
+      () async {
+        final List<String> titleList =
+            await searchRepository.getRelatedKeyword(keyword);
+        relatedKeywords = titleList;
+        notifyListeners();
+      },
+    );
   }
 }

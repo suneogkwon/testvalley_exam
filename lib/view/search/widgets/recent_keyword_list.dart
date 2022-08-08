@@ -1,13 +1,18 @@
 part of '../search_page.dart';
 
-class RecentKeywordList extends StatelessWidget {
+class RecentKeywordList extends StatefulWidget {
   const RecentKeywordList({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final RelatedKeywordViewModel viewModel =
-        context.read<RelatedKeywordViewModel>();
+  State<RecentKeywordList> createState() => _RecentKeywordListState();
+}
 
+class _RecentKeywordListState extends State<RecentKeywordList> {
+  List<String> recentKeywordList =
+      Pref().storage.getStringList(Pref.recentKeyword) ?? [];
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -16,80 +21,80 @@ class RecentKeywordList extends StatelessWidget {
           children: [
             Text(
               '최근 검색어',
-              style: GoogleFonts.notoSans(
-                color: const Color(0xFF333333),
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.5,
-              ),
+              style: listLabelStyle,
             ),
             const Spacer(),
             GestureDetector(
-              onTap: () => _onTapClear(viewModel),
+              onTap: _onTapClear,
               child: Text(
                 '전체삭제',
-                style: GoogleFonts.notoSans(
-                  fontSize: 12.0,
-                  color: const Color(0xFF999999),
-                ),
+                style: smallCaptionStyle,
               ),
             )
           ],
         ),
         const SizedBox(height: 16.0),
         Expanded(
-          child: Consumer<SearchViewModel>(
-            builder: (_, provider, __) {
-              final List<String> keywords = provider.recentSearchKeywords;
-
-              if (keywords.isEmpty) return const SizedBox();
-
-              return ListView.builder(
-                itemCount: keywords.length,
-                itemExtent: 50,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      keywords[index],
-                      style: GoogleFonts.notoSans(
-                        fontSize: 14.0,
-                        color: const Color(0xFF333333),
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 0,
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () => _onTapSelectedKeywordDelete(
-                        viewModel,
-                        index: index,
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        color: Color(0xFF999999),
-                        size: 20.0,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
+          child: ListView.builder(
+            itemCount: recentKeywordList.length,
+            itemExtent: 50,
+            itemBuilder: (_, index) => _recentKeyword(index),
           ),
         )
       ],
     );
   }
 
+  ListTile _recentKeyword(int index) {
+    final String keyword = recentKeywordList[index];
+
+    return ListTile(
+      title: Text(
+        keyword,
+        style: bodyTextStyle,
+      ),
+      onTap: () => _onTapKeyword(keyword),
+      contentPadding: EdgeInsets.zero,
+      trailing: GestureDetector(
+        onTap: () => _onTapSelectedKeywordDelete(index),
+        child: const Icon(
+          Icons.close,
+          color: Color(0xFF999999),
+          size: 20.0,
+        ),
+      ),
+    );
+  }
+
+  /// 최근 검색어 탭 이벤트
+  void _onTapKeyword(String keyword) {
+    locator<AppNavigator>().pushNamed(
+      AppRoutes.productList,
+      arguments: keyword,
+    );
+  }
+
   /// 최근 검색어 전체삭제 탭 이벤트
-  void _onTapClear(RelatedKeywordViewModel viewModel) {
-    viewModel.clearRecentSearchKeywords();
+  void _onTapClear() {
+    setState(() {
+      recentKeywordList = [];
+    });
+    _saveRecentKeywordList();
   }
 
   /// 최근 검색어 개별 삭제 탭 이벤트
-  void _onTapSelectedKeywordDelete(
-    RelatedKeywordViewModel viewModel, {
-    required int index,
-  }) {
-    viewModel.removeSelectedKeyword(index);
+  void _onTapSelectedKeywordDelete(int index) {
+    setState(() {
+      recentKeywordList.removeAt(index);
+    });
+    _saveRecentKeywordList();
+  }
+
+  /// 최근검색어([recentKeywordList])를 내부 저장소에 저장한다.
+  void _saveRecentKeywordList() {
+    Pref().storage.setStringList(
+          Pref.recentKeyword,
+          recentKeywordList,
+        );
   }
 }

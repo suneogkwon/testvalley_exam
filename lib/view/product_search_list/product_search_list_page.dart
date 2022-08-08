@@ -11,7 +11,7 @@ class ProductSearchListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: HomeAppBar(
+      appBar: MainAppBar(
         actions: [
           SizedBox(
             width: 40.0,

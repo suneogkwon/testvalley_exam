@@ -27,7 +27,7 @@ class ProductDetailPage extends StatelessWidget {
         ChangeNotifierProvider.value(value: plvm),
       ],
       builder: (context, child) => CustomScaffold(
-        appBar: HomeAppBar(),
+        appBar: MainAppBar(),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -3,7 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
 import 'package:testvalley/data/repository/search_repository.dart';
-import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
+import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
 class ProductListViewModel extends ChangeNotifier {
   ProductListViewModel() {
@@ -32,7 +32,7 @@ class ProductListViewModel extends ChangeNotifier {
   void loadProducts({
     bool initial = false,
   }) async {
-    final String keyword = locator<SearchViewModel>().searchKeyword;
+    final String keyword = locator<SearchKeywordViewModel>().searchKeyword;
 
     final ProductModelResponse response = await searchRepository.getProducts(
       keyword: keyword,

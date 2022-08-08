@@ -10,12 +10,14 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
     CartItemModel(
       item: ProductModel.fromJson(json['item'] as Map<String, dynamic>),
       amount: json['amount'] as int? ?? 1,
-      totalPrice: json['totalAmount'] as int? ?? 0,
+      totalPrice: json['totalPrice'] as int? ?? 0,
+      checked: json['checked'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
     <String, dynamic>{
       'item': instance.item,
       'amount': instance.amount,
-      'totalAmount': instance.totalPrice,
+      'totalPrice': instance.totalPrice,
+      'checked': instance.checked,
     };

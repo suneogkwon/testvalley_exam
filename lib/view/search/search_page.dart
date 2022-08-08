@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:testvalley/config/format_util.dart';
+import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
+import 'package:testvalley/config/storage_util.dart';
 import 'package:testvalley/generated/assets.dart';
+import 'package:testvalley/theme/text_theme.dart';
 import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
-import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
+import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 import 'package:testvalley/widgets/app_bar/home_app_bar.dart';
 import 'package:testvalley/widgets/form/search_keyword_field.dart';
+import 'package:testvalley/widgets/layout/content_container.dart';
 import 'package:testvalley/widgets/layout/custom_scaffold.dart';
 
 part 'widgets/no_related_keyword_list.dart';
@@ -19,40 +24,31 @@ class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
 
   final TextEditingController searchController = TextEditingController();
+  final SearchKeywordViewModel svm = locator<SearchKeywordViewModel>();
+  final RelatedKeywordViewModel rkvm = locator<RelatedKeywordViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: locator<SearchViewModel>()),
-        ChangeNotifierProvider.value(value: locator<RelatedKeywordViewModel>()),
+        ChangeNotifierProvider.value(value: svm),
+        ChangeNotifierProvider.value(value: rkvm),
       ],
       builder: (context, _) {
-        final SearchViewModel viewModel = context.read<SearchViewModel>();
-
         return CustomScaffold(
-          onWillPop: () async => viewModel.resetState(),
-          appBar: HomeAppBar(),
-          body: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-            ),
+          onWillPop: _onWillPop,
+          appBar: MainAppBar(),
+          body: ContentContainer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SearchKeywordField(
                   controller: searchController,
                   focus: true,
-                  onChanged: (String? value) => _onChangedKeyword(
-                    viewModel,
-                    keyword: value ?? '',
-                  ),
-                  onFieldSubmitted: (String? value) {
-                    if (value == null) return;
-                    _onSubmit(viewModel, keyword: value);
-                  },
+                  onChanged: _onChangedKeyword,
+                  onFieldSubmitted: _onSubmit,
                   suffixIcon: GestureDetector(
-                    onTap: () => _onTapSearchTextClear(viewModel),
+                    onTap: _onTapSearchTextClear,
                     child: SvgPicture.asset(
                       Assets.iconsDelete,
                       fit: BoxFit.scaleDown,
@@ -60,13 +56,15 @@ class SearchPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Consumer<SearchViewModel>(
-                    builder: (_, provider, child) {
-                      if (provider.searchKeyword.isEmpty) {
+                  child: Consumer2<SearchKeywordViewModel,
+                      RelatedKeywordViewModel>(
+                    builder: (_, __, ___, ____) {
+                      // 검색바가 비어있다면 최근 검색어 출력
+                      if (svm.searchKeyword.isEmpty) {
                         return const RecentKeywordList();
                       }
-
-                      if (provider.relatedKeywords.isEmpty) {
+                      // 연관 검색어가 없다면 안내 문구 출력
+                      if (rkvm.relatedKeywords.isEmpty) {
                         return const NoRelatedKeywordList();
                       }
 
@@ -82,25 +80,39 @@ class SearchPage extends StatelessWidget {
     );
   }
 
+  /// 뒤로 갈 때
+  void _onWillPop() {
+    svm.dispose();
+    rkvm.dispose();
+  }
+
   /// 검색바 변경 감지
-  void _onChangedKeyword(
-    SearchViewModel viewModel, {
-    required String keyword,
-  }) {
-    viewModel.setRelatedKeywords(keyword);
+  void _onChangedKeyword(String? keyword) {
+    svm.setSearchKeyword(keyword ?? '');
+    rkvm.setRelatedKeywords(keyword ?? '');
   }
 
   /// 검색바 제출 이벤트
-  void _onSubmit(
-    SearchViewModel viewModel, {
-    required String keyword,
-  }) {
-    viewModel.routeSearchPage(keyword);
+  void _onSubmit(String? keyword) {
+    if (keyword != null) {
+      final List<String> recentKeywordList =
+          Pref().storage.getStringList(Pref.recentKeyword) ?? [];
+
+      recentKeywordList.insert(0, keyword);
+
+      Pref().storage.setStringList(
+            Pref.recentKeyword,
+            recentKeywordList,
+          );
+
+      locator<AppNavigator>().pushNamed(AppRoutes.productList);
+    }
   }
 
   /// 검색바 초기화 이벤트
-  void _onTapSearchTextClear(SearchViewModel viewModel) {
-    viewModel.setRelatedKeywords('');
+  void _onTapSearchTextClear() {
+    svm.resetState();
+    rkvm.resetState();
     searchController.clear();
   }
 }

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/viewmodel/cart_viewmodel.dart';
 import 'package:testvalley/viewmodel/product_list_viewmodel.dart';
 import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
-import 'package:testvalley/viewmodel/search/search_viewmodel.dart';
+import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
 /// 서비스 로케이터
 ///
@@ -16,10 +16,10 @@ final GetIt locator = GetIt.I;
 void initLocator() {
   // 네비게이션 싱글톤 생성
   // viewmodel 등 context가 없는 곳에서 Navigator를 사용하기 위한 설정
-  locator.registerSingleton(GlobalKey<NavigatorState>());
+  locator.registerSingleton(AppNavigator());
 
-  locator.registerSingleton(RelatedKeywordViewModel());
-  locator.registerSingleton(SearchViewModel());
-  locator.registerSingleton(ProductListViewModel());
+  locator.registerFactory(() => RelatedKeywordViewModel());
+  locator.registerFactory(() => SearchKeywordViewModel());
+  locator.registerFactory(() => ProductListViewModel());
   locator.registerSingleton(CartViewModel());
 }
