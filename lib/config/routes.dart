@@ -18,7 +18,7 @@ class AppRoutes {
       <String, Widget Function(BuildContext context)>{
     home: (_) => const HomePage(),
     search: (_) => SearchPage(),
-    productList: (_) => const ProductSearchResultPage(),
+    productList: (_) => ProductSearchResultPage(),
     productDetail: (_) => const ProductDetailPage(),
     cart: (_) => const CartPage(),
     orderComplete: (_) => const OrderCompletePage(),

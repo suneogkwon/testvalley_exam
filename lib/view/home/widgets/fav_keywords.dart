@@ -47,7 +47,7 @@ class FavKeywordChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onTapFavKeyword(keyword),
+      onTap: _onTapFavKeyword,
       child: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 9.0,
@@ -69,10 +69,8 @@ class FavKeywordChip extends StatelessWidget {
   }
 
   /// 인기 검색어 탭 이벤트
-  void _onTapFavKeyword(String keyword) {
-    locator<AppNavigator>().pushNamed(
-      AppRoutes.productList,
-      arguments: keyword,
-    );
+  void _onTapFavKeyword() {
+    locator<SearchKeywordViewModel>().searchKeyword = keyword;
+    locator<AppNavigator>().pushNamed(AppRoutes.productList);
   }
 }

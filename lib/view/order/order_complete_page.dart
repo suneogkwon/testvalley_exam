@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:testvalley/config/format_util.dart';
+import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/generated/assets.dart';
@@ -12,8 +14,7 @@ class OrderCompletePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RouteSettings prevRoute = ModalRoute.of(context)!.settings;
-    final int totalPrice = prevRoute.arguments as int;
+    final int totalPrice = ModalRoute.of(context)!.settings.arguments as int;
 
     return CustomScaffold(
       appBar: MainAppBar(),
@@ -57,10 +58,7 @@ class OrderCompletePage extends StatelessWidget {
                       color: const Color(0xFF999999),
                     )),
                 Text(
-                  '''${NumberFormat.simpleCurrency(
-                    name: '',
-                    decimalDigits: 0,
-                  ).format(totalPrice)}원''',
+                  '${totalPrice.toKrFormat()}원',
                   style: GoogleFonts.notoSans(
                     fontSize: 12.0,
                   ),
@@ -114,9 +112,9 @@ class OrderCompletePage extends StatelessWidget {
   }
 
   void _onTapConfirm() {
-    locator<GlobalKey<NavigatorState>>().currentState!.pushNamedAndRemoveUntil(
-          AppRoutes.home,
-          (route) => false,
-        );
+    locator<AppNavigator>().pushNamedAndRemoveUntil(
+      AppRoutes.home,
+      (route) => false,
+    );
   }
 }

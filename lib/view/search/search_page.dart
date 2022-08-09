@@ -24,14 +24,14 @@ class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
 
   final TextEditingController searchController = TextEditingController();
-  final SearchKeywordViewModel svm = locator<SearchKeywordViewModel>();
+  final SearchKeywordViewModel skvm = locator<SearchKeywordViewModel>();
   final RelatedKeywordViewModel rkvm = locator<RelatedKeywordViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: svm),
+        ChangeNotifierProvider.value(value: skvm),
         ChangeNotifierProvider.value(value: rkvm),
       ],
       builder: (context, _) {
@@ -45,8 +45,8 @@ class SearchPage extends StatelessWidget {
                 SearchKeywordField(
                   controller: searchController,
                   focus: true,
+                  onFieldSubmitted: _searchProduct,
                   onChanged: _onChangedKeyword,
-                  onFieldSubmitted: svm.searchProduct,
                   suffixIcon: GestureDetector(
                     onTap: _onTapSearchTextClear,
                     child: SvgPicture.asset(
@@ -60,7 +60,7 @@ class SearchPage extends StatelessWidget {
                       RelatedKeywordViewModel>(
                     builder: (_, __, ___, ____) {
                       // 검색바가 비어있다면 최근 검색어 출력
-                      if (svm.searchKeyword.isEmpty) {
+                      if (skvm.searchKeyword.isEmpty) {
                         return const RecentKeywordList();
                       }
                       // 연관 검색어가 없다면 안내 문구 출력
@@ -68,7 +68,7 @@ class SearchPage extends StatelessWidget {
                         return const NoRelatedKeywordList();
                       }
 
-                      return const RelatedKeywordList();
+                      return RelatedKeywordList();
                     },
                   ),
                 ),
@@ -82,20 +82,38 @@ class SearchPage extends StatelessWidget {
 
   /// 뒤로 갈 때
   void _onWillPop() {
-    svm.dispose();
-    rkvm.dispose();
+    skvm.resetState();
+    rkvm.resetState();
   }
 
   /// 검색바 변경 감지
-  void _onChangedKeyword(String? keyword) {
-    svm.setSearchKeyword(keyword ?? '');
-    rkvm.setRelatedKeywordList(keyword ?? '');
+  void _onChangedKeyword(String keyword) {
+    skvm.setSearchKeyword(keyword);
+    rkvm.setRelatedKeywordList(keyword);
   }
 
   /// 검색바 초기화 이벤트
   void _onTapSearchTextClear() {
-    svm.resetState();
+    skvm.resetState();
     rkvm.resetState();
     searchController.clear();
+  }
+
+  /// 상품 검색
+  void _searchProduct(String? keyword) {
+    if (keyword != null && keyword != '') {
+      final List<String> recentKeywordList =
+          Pref().storage.getStringList(Pref.recentKeyword) ?? [];
+
+      recentKeywordList.insert(0, keyword);
+
+      Pref().storage.setStringList(
+            Pref.recentKeyword,
+            recentKeywordList,
+          );
+
+      locator<SearchKeywordViewModel>().searchKeyword = keyword;
+      locator<AppNavigator>().pushNamed(AppRoutes.productList);
+    }
   }
 }

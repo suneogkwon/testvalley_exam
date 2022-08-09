@@ -68,10 +68,8 @@ class _RecentKeywordListState extends State<RecentKeywordList> {
 
   /// 최근 검색어 탭 이벤트
   void _onTapKeyword(String keyword) {
-    locator<AppNavigator>().pushNamed(
-      AppRoutes.productList,
-      arguments: keyword,
-    );
+    locator<SearchKeywordViewModel>().searchKeyword = keyword;
+    locator<AppNavigator>().pushNamed(AppRoutes.productList);
   }
 
   /// 최근 검색어 전체삭제 탭 이벤트

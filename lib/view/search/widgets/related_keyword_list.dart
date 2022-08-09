@@ -1,13 +1,12 @@
 part of '../search_page.dart';
 
 class RelatedKeywordList extends StatelessWidget {
-  const RelatedKeywordList({Key? key}) : super(key: key);
+  RelatedKeywordList({Key? key}) : super(key: key);
+
+  final SearchKeywordViewModel skvm = locator<SearchKeywordViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    final SearchKeywordViewModel svm = locator<SearchKeywordViewModel>();
-    final String keyword = svm.searchKeyword;
-
     return Consumer<RelatedKeywordViewModel>(
       builder: (_, rkvm, __) {
         return ListView.separated(
@@ -18,8 +17,9 @@ class RelatedKeywordList extends StatelessWidget {
             final List<String> splitTitle = title.removeHtmlTag();
 
             return ListTile(
-              onTap: () =>
-                  _onTapRelatedKeywordItem(title.removeHtmlTagMapJoin()),
+              onTap: () => _onTapRelatedKeywordItem(
+                title.removeHtmlTagMapJoin(),
+              ),
               contentPadding: EdgeInsets.zero,
               title: RichText(
                 text: TextSpan(
@@ -28,7 +28,7 @@ class RelatedKeywordList extends StatelessWidget {
                       text: e,
                       style: GoogleFonts.notoSans(
                         fontSize: 14.0,
-                        color: e == keyword
+                        color: e == skvm.searchKeyword
                             ? const Color(0xFF00D094)
                             : const Color(0xFF333333),
                       ),
@@ -50,9 +50,7 @@ class RelatedKeywordList extends StatelessWidget {
   }
 
   void _onTapRelatedKeywordItem(String keyword) {
-    locator<AppNavigator>().pushNamed(
-      AppRoutes.productList,
-      arguments: keyword,
-    );
+    skvm.searchKeyword = keyword;
+    locator<AppNavigator>().pushNamed(AppRoutes.productList);
   }
 }

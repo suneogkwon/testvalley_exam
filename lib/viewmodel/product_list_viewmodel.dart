@@ -15,10 +15,7 @@ class ProductListViewModel extends ChangeNotifier {
   final SearchRepository _searchRepository = SearchRepository();
 
   final PagingController<int, ProductModel> pagingController =
-      PagingController(firstPageKey: 0);
-
-  /// 상품 리스트
-  List<ProductModel> productList = [];
+      PagingController(firstPageKey: 1);
 
   /// 다음 키
   int nextPageKey = 1;
@@ -29,10 +26,7 @@ class ProductListViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void loadProducts({
-    required String keyword,
-    bool initial = false,
-  }) async {
+  void loadProducts({bool initial = false}) async {
     final String keyword = locator<SearchKeywordViewModel>().searchKeyword;
 
     final ProductModelResponse response = await _searchRepository.getProducts(
@@ -43,6 +37,7 @@ class ProductListViewModel extends ChangeNotifier {
 
     if (initial) {
       pagingController.refresh();
+      return;
     }
 
     if (isLast) {

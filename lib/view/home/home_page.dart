@@ -5,6 +5,7 @@ import 'package:testvalley/config/navigator_util.dart';
 import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/theme/text_theme.dart';
+import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 import 'package:testvalley/widgets/app_bar/home_app_bar.dart';
 import 'package:testvalley/widgets/form/search_keyword_field.dart';
 import 'package:testvalley/widgets/layout/content_container.dart';
@@ -24,25 +25,17 @@ class HomePage extends StatelessWidget {
       body: ContentContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: const [
             SearchKeywordField(
               readOnly: true,
               showPrefixIcon: true,
-              onTap: _onTapSearchField,
               hintText: '살까말까 고민된다면 검색해보세요!',
             ),
             // 인기 검색어
-            const FavKeywords(),
+            FavKeywords(),
           ],
         ),
       ),
     );
-  }
-
-  /// 검색바 탭 이벤트
-  void _onTapSearchField() {
-    FocusManager.instance.primaryFocus!.unfocus();
-
-    locator<AppNavigator>().pushNamed(AppRoutes.search);
   }
 }

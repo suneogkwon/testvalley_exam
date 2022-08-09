@@ -6,7 +6,6 @@ import 'package:testvalley/config/api_config.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
 
 class SearchApi {
-  final String naverApiUrl = 'openapi.naver.com';
   final String urlPath = '/v1/search/shop.json';
 
   Future<ProductModelResponse?> getSearchList(

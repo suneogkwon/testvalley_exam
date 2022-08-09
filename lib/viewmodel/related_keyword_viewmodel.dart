@@ -12,12 +12,6 @@ class RelatedKeywordViewModel extends ChangeNotifier {
   // API 요청 딜레이 타이머
   Timer? _searchApiTimer;
 
-  @override
-  void dispose() {
-    _searchApiTimer?.cancel();
-    super.dispose();
-  }
-
   void resetState() {
     _searchApiTimer?.cancel();
     relatedKeywords.clear();

@@ -16,4 +16,23 @@ class AppNavigator extends NavigatorState {
       arguments: arguments,
     );
   }
+
+  @override
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+      Route<T> newRoute, RoutePredicate predicate) {
+    return nav.currentState!.pushAndRemoveUntil(
+      newRoute,
+      predicate,
+    );
+  }
+
+  @override
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+      String newRouteName, RoutePredicate predicate,
+      {Object? arguments}) {
+    return nav.currentState!.pushNamedAndRemoveUntil(
+      newRouteName,
+      predicate,
+    );
+  }
 }

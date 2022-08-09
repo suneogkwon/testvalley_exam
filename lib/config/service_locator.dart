@@ -18,8 +18,8 @@ void initLocator() {
   // viewmodel 등 context가 없는 곳에서 Navigator를 사용하기 위한 설정
   locator.registerSingleton(AppNavigator());
 
-  locator.registerFactory(() => RelatedKeywordViewModel());
-  locator.registerFactory(() => SearchKeywordViewModel());
-  locator.registerFactory(() => ProductListViewModel());
-  locator.registerSingleton(CartViewModel());
+  locator.registerSingleton<CartViewModel>(CartViewModel());
+  locator.registerSingleton<SearchKeywordViewModel>(SearchKeywordViewModel());
+  locator.registerSingleton<RelatedKeywordViewModel>(RelatedKeywordViewModel());
+  locator.registerFactory<ProductListViewModel>(() => ProductListViewModel());
 }
