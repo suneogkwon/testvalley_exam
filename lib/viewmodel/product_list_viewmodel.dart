@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
-import 'package:testvalley/data/repository/search_repository.dart';
+import 'package:testvalley/data/repository/naver/search_repository.dart';
 import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
 class ProductListViewModel extends ChangeNotifier {

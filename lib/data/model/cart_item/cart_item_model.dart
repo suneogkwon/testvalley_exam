@@ -12,9 +12,16 @@ class CartItemModel {
     this.checked = false,
   });
 
+  /// 상품
   final ProductModel item;
+
+  /// 상품갯수
   int amount;
+
+  /// 총 가격
   int totalPrice;
+
+  /// 장바구니 체크 여부
   bool checked;
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) =>

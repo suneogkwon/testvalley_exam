@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:testvalley/data/repository/search_repository.dart';
+import 'package:testvalley/data/repository/naver/search_repository.dart';
 
 class RelatedKeywordViewModel extends ChangeNotifier {
   final SearchRepository _searchRepository = SearchRepository();
