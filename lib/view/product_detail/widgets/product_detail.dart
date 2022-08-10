@@ -25,23 +25,23 @@ class _ProductDetailState extends State<ProductDetail> {
           child: InAppWebView(
               initialUrlRequest: URLRequest(url: Uri.parse(widget.item.link))),
         ),
-        Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(border: Border.all()),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                if (isOpen) {
-                  boxHeight = 300;
-                } else {
-                  boxHeight = 1000;
-                }
-              });
-            },
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              if (isOpen) {
+                boxHeight = 300;
+              } else {
+                boxHeight = 1000;
+              }
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+            padding: const EdgeInsets.all(12.0),
+            decoration: BoxDecoration(border: Border.all()),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,

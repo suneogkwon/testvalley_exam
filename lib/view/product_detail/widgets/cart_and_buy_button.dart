@@ -71,9 +71,6 @@ class CartAndBuyButton extends StatelessWidget {
   }
 
   void _onTapQuickPurchase() {
-    locator<SearchKeywordViewModel>().resetState();
-    locator<RelatedKeywordViewModel>().resetState();
-
     locator<AppNavigator>().pushNamed(
       AppRoutes.orderComplete,
       arguments: int.parse(item.lowestPrice),

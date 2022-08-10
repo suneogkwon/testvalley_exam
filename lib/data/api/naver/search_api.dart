@@ -9,7 +9,14 @@ class NaverSearchApi extends INaverSearchApi {
   Future<ApiResponse> getShoppingSearchResult({
     Map<String, dynamic>? query,
   }) async {
-    final Uri uri = Uri.https(url, path, query);
+    final Map<String, String>? castedQuery = query?.map(
+      (key, value) => MapEntry(
+        key,
+        value.toString(),
+      ),
+    );
+
+    final Uri uri = Uri.https(url, path, castedQuery);
 
     try {
       final http.Response response = await callGet(uri: uri);

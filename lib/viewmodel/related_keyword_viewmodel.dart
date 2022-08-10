@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:testvalley/data/repository/naver/search_repository.dart';
+import 'package:testvalley/config/service_locator.dart';
+import 'package:testvalley/data/repository/naver_repository_interface.dart';
 
 class RelatedKeywordViewModel extends ChangeNotifier {
-  final SearchRepository _searchRepository = SearchRepository();
+  final INaverSearchRepo _searchRepo = locator<INaverSearchRepo>();
 
   /// 연관 검색어 리스트
   List<String> relatedKeywords = <String>[];
@@ -33,7 +34,7 @@ class RelatedKeywordViewModel extends ChangeNotifier {
       const Duration(milliseconds: 500),
       () async {
         final List<String> titleList =
-            await _searchRepository.getRelatedKeyword(keyword);
+            await _searchRepo.getSearchTitleList(keyword) ?? [];
         relatedKeywords = titleList;
         notifyListeners();
       },

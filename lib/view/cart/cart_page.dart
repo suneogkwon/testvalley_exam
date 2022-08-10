@@ -3,13 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:testvalley/config/format_util.dart';
 import 'package:testvalley/config/navigator_util.dart';
+import 'package:testvalley/config/routes.dart';
 import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/cart_item/cart_item_model.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
-import 'package:testvalley/view/order/order_complete_page.dart';
 import 'package:testvalley/viewmodel/cart_viewmodel.dart';
-import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
-import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 import 'package:testvalley/widgets/app_bar/home_app_bar.dart';
 import 'package:testvalley/widgets/layout/custom_scaffold.dart';
 
@@ -24,6 +22,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductModel? item =
         ModalRoute.of(context)!.settings.arguments as ProductModel?;
+
     final CartViewModel cvm = locator<CartViewModel>();
 
     return MultiProvider(

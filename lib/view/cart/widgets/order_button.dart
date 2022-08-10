@@ -58,16 +58,10 @@ class OrderButton extends StatelessWidget {
     if (totalOrderPrice == 0) return;
 
     cvm.cartItemList.clear();
-    locator<SearchKeywordViewModel>().resetState();
-    locator<RelatedKeywordViewModel>().resetState();
 
-    locator<AppNavigator>().push(
-      MaterialPageRoute(
-        builder: (context) => const OrderCompletePage(),
-        settings: RouteSettings(
-          arguments: totalOrderPrice,
-        ),
-      ),
+    locator<AppNavigator>().pushNamed(
+      AppRoutes.orderComplete,
+      arguments: totalOrderPrice,
     );
   }
 }

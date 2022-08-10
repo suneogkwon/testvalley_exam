@@ -12,6 +12,7 @@ class CartItemList extends StatelessWidget {
         cvm.cartItemList.length,
         (index) {
           final CartItemModel cartModel = cvm.cartItemList[index];
+
           return Container(
             margin: const EdgeInsets.symmetric(
               vertical: 16,
@@ -40,6 +41,51 @@ class CartItemList extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Row _itemTitle(
+    CartItemModel cartModel,
+    int index,
+  ) {
+    return Row(
+      children: [
+        Consumer<CartViewModel>(
+          builder: (_, __, ___) {
+            return SizedBox.square(
+              dimension: 18,
+              child: Checkbox(
+                value: cartModel.checked,
+                onChanged: (value) => cvm.toggleSelectOne(index, value),
+              ),
+            );
+          },
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            cartModel.item.title.removeHtmlTagMapJoin(),
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: () => _onTapDeleteOne(cvm, index),
+          child: const Text(
+            '삭제',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  void _onTapDeleteOne(CartViewModel viewModel, int index) {
+    viewModel.deleteOne(index);
   }
 
   Column _itemInfo(CartItemModel cartModel, int index) {
@@ -107,50 +153,5 @@ class CartItemList extends StatelessWidget {
 
   void _onTapAddAmount(int index) {
     cvm.addItemAmount(index);
-  }
-
-  Row _itemTitle(
-    CartItemModel cartModel,
-    int index,
-  ) {
-    return Row(
-      children: [
-        Consumer<CartViewModel>(
-          builder: (_, __, ___) {
-            return SizedBox.square(
-              dimension: 18,
-              child: Checkbox(
-                value: cartModel.checked,
-                onChanged: (value) => cvm.toggleSelectOne(index, value),
-              ),
-            );
-          },
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            cartModel.item.title.removeHtmlTagMapJoin(),
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        GestureDetector(
-          onTap: () => _onTapDeleteOne(cvm, index),
-          child: const Text(
-            '삭제',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  void _onTapDeleteOne(CartViewModel viewModel, int index) {
-    viewModel.deleteOne(index);
   }
 }

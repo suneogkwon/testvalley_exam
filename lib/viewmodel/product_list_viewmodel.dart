@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:testvalley/config/service_locator.dart';
 import 'package:testvalley/data/model/product/product_model.dart';
 import 'package:testvalley/data/repository/naver/search_repository.dart';
-import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
 class ProductListViewModel extends ChangeNotifier {
-  ProductListViewModel() {
-    pagingController.addPageRequestListener((pageKey) {
-      loadProducts();
-    });
-  }
-
-  final SearchRepository _searchRepository = SearchRepository();
+  final NaverSearchRepo _searchRepo = NaverSearchRepo();
 
   final PagingController<int, ProductModel> pagingController =
       PagingController(firstPageKey: 1);
@@ -26,10 +18,17 @@ class ProductListViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void loadProducts({bool initial = false}) async {
-    final String keyword = locator<SearchKeywordViewModel>().searchKeyword;
+  void addPagingListener(String keyword) {
+    pagingController.addPageRequestListener((_) {
+      loadProducts(keyword: keyword);
+    });
+  }
 
-    final ProductModelResponse response = await _searchRepository.getProducts(
+  void loadProducts({
+    required String keyword,
+    bool initial = false,
+  }) async {
+    final ProductModelResponse response = await _searchRepo.getProductList(
       keyword: keyword,
       start: nextPageKey,
     );

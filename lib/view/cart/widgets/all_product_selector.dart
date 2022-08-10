@@ -7,10 +7,6 @@ class AllProductSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool atLeastOneChecked = cvm.cartItemList.any(
-      (element) => element.checked,
-    );
-
     return Row(
       children: [
         SizedBox.square(
@@ -29,18 +25,25 @@ class AllProductSelector extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        if (!atLeastOneChecked)
-          const SizedBox()
-        else
-          GestureDetector(
-            onTap: _onTapDeleteSelectedItem,
-            child: const Text(
-              '선택삭제',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ),
+        Consumer<CartViewModel>(
+          builder: (_, __, ___) {
+            final bool atLeastOneChecked = cvm.cartItemList.any(
+              (element) => element.checked,
+            );
+
+            return !atLeastOneChecked
+                ? const SizedBox()
+                : GestureDetector(
+                    onTap: _onTapDeleteSelectedItem,
+                    child: const Text(
+                      '선택삭제',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+          },
+        ),
       ],
     );
   }

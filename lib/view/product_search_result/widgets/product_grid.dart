@@ -5,26 +5,25 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductListViewModel>(
-      builder: (_, provider, __) {
-        return PagedGridView<int, ProductModel>(
-          pagingController: provider.pagingController,
-          builderDelegate: PagedChildBuilderDelegate(
-            itemBuilder: (context, item, index) {
-              return ProductGridItem(
-                index: index,
-                item: provider.pagingController.itemList![index],
-              );
-            },
-          ),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
-            mainAxisExtent: 320,
-            mainAxisSpacing: 40.0,
-            crossAxisSpacing: 15.0,
-          ),
-        );
-      },
+    return Expanded(
+      child: Consumer<ProductListViewModel>(
+        builder: (_, provider, __) {
+          return PagedGridView<int, ProductModel>(
+            pagingController: provider.pagingController,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (_, item, index) {
+                return ProductGridItem(item: item);
+              },
+            ),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              mainAxisExtent: 320,
+              mainAxisSpacing: 40.0,
+              crossAxisSpacing: 15.0,
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -32,11 +31,9 @@ class ProductGrid extends StatelessWidget {
 class ProductGridItem extends StatelessWidget {
   const ProductGridItem({
     Key? key,
-    required this.index,
     required this.item,
   }) : super(key: key);
 
-  final int index;
   final ProductModel item;
 
   @override
@@ -46,8 +43,8 @@ class ProductGridItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: _onTapItem,
-      child: LayoutBuilder(builder: (_, constraints) {
-        return Column(
+      child: LayoutBuilder(
+        builder: (_, constraints) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -136,8 +133,8 @@ class ProductGridItem extends StatelessWidget {
               ],
             )
           ],
-        );
-      }),
+        ),
+      ),
     );
   }
 

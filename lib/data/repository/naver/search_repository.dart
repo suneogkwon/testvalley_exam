@@ -8,7 +8,7 @@ class NaverSearchRepo implements INaverSearchRepo {
   final INaverSearchApi searchApi = locator<INaverSearchApi>();
 
   @override
-  Future<ProductModelResponse?> getProductList({
+  Future<ProductModelResponse> getProductList({
     required String keyword,
     int? start,
   }) async {
@@ -18,14 +18,10 @@ class NaverSearchRepo implements INaverSearchRepo {
         'start': start,
       },
     );
-    final ProductModelResponse products;
+    ProductModelResponse products = ProductModelResponse(productList: []);
 
-    if (!response.isSuccess()) return null;
-
-    if (response.existData()) {
+    if (response.isAllPass()) {
       products = ProductModelResponse.fromJson(response.data);
-    } else {
-      products = ProductModelResponse(productList: []);
     }
     return products;
   }
@@ -35,13 +31,14 @@ class NaverSearchRepo implements INaverSearchRepo {
     final ApiResponse response = await searchApi.getShoppingSearchResult(
       query: {'query': keyword},
     );
-    final ProductModelResponse products;
+
     final List<String> titleList = [];
 
     if (!response.isSuccess()) return null;
 
     if (response.existData()) {
-      products = ProductModelResponse.fromJson(response.data);
+      final ProductModelResponse products =
+          ProductModelResponse.fromJson(response.data);
 
       for (ProductModel element in products.productList) {
         titleList.add(element.title);

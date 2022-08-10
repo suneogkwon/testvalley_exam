@@ -7,8 +7,4 @@ class SearchKeywordViewModel extends ChangeNotifier {
   void resetState() {
     searchKeyword = '';
   }
-
-  void setSearchKeyword(String keyword) {
-    searchKeyword = keyword;
-  }
 }

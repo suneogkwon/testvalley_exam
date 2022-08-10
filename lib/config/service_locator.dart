@@ -6,6 +6,7 @@ import 'package:testvalley/data/repository/naver/search_repository.dart';
 import 'package:testvalley/data/repository/naver_repository_interface.dart';
 import 'package:testvalley/viewmodel/cart_viewmodel.dart';
 import 'package:testvalley/viewmodel/product_list_viewmodel.dart';
+import 'package:testvalley/viewmodel/recent_keyword_viewmodel.dart';
 import 'package:testvalley/viewmodel/related_keyword_viewmodel.dart';
 import 'package:testvalley/viewmodel/search_keyword_viewmodel.dart';
 
@@ -30,6 +31,10 @@ void initLocator() {
 
   locator.registerSingleton<CartViewModel>(CartViewModel());
   locator.registerSingleton<SearchKeywordViewModel>(SearchKeywordViewModel());
-  locator.registerSingleton<RelatedKeywordViewModel>(RelatedKeywordViewModel());
+  locator.registerSingleton<RecentKeywordViewModel>(RecentKeywordViewModel());
+
+  locator.registerFactory<RelatedKeywordViewModel>(
+    () => RelatedKeywordViewModel(),
+  );
   locator.registerFactory<ProductListViewModel>(() => ProductListViewModel());
 }
